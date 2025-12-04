@@ -1,0 +1,35 @@
+# Development Dockerfile
+FROM rust:1.83-slim
+
+# Install dependencies for PostgreSQL and development tools
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install nightly toolchain to support edition2024 dependencies
+# Retry logic in case of network issues
+RUN for i in 1 2 3; do rustup toolchain install nightly && break || sleep 5; done && \
+    rustup default nightly
+
+WORKDIR /app
+
+# Copy manifests
+COPY Cargo.toml ./
+
+# Create a dummy main to cache dependencies
+RUN mkdir src && \
+    echo "fn main() {}" > src/main.rs && \
+    cargo build && \
+    rm -rf src
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 8000
+
+# Run in development mode
+# Note: For hot reload, restart container after code changes
+CMD ["cargo", "run"]

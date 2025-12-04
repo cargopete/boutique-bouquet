@@ -1,0 +1,56 @@
+# Rust
+target/
+**/*.rs.bk
+*.pdb
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Uploads
+backend/uploads/*.jpg
+backend/uploads/*.jpeg
+backend/uploads/*.png
+backend/uploads/*.webp
+!backend/uploads/.gitkeep
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+
+# Docker
+.dockerignore
+
+# Misc
+.cache/
+temp/
+tmp/
+.vercel

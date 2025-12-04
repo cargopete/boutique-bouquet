@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: boutique-postgres
+    environment:
+      POSTGRES_DB: boutique_bouquet
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: devpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - boutique-network
+
+  # Rust Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: boutique-backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://postgres:devpassword@postgres:5432/boutique_bouquet
+      JWT_SECRET: dev-secret-change-in-production-minimum-32-characters
+      JWT_EXPIRY_HOURS: 24
+      RUST_LOG: debug
+      HOST: 0.0.0.0
+      PORT: 8000
+      UPLOAD_DIR: ./uploads
+      MAX_UPLOAD_SIZE: 5242880
+      CORS_ORIGINS: http://localhost:3000
+    volumes:
+      - ./backend:/app
+      - backend_target:/app/target
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - boutique-network
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: boutique-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_SITE_NAME: Boutique Bouquet
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    networks:
+      - boutique-network
+
+volumes:
+  postgres_data:
+  backend_target:
+
+networks:
+  boutique-network:
+    driver: bridge

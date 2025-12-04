@@ -1,0 +1,243 @@
+# Boutique Bouquet Task Runner Configuration
+# Run `yatr list` to see all available tasks
+
+[settings]
+# Enable caching for faster rebuilds
+cache = true
+# Default parallelism (0 = number of CPUs)
+parallelism = 0
+
+# ============================================================================
+# LOCAL DEVELOPMENT - The Full Stack
+# ============================================================================
+
+[tasks.dev]
+desc = "Start the entire local development stack (DB + Backend + Frontend)"
+run = ["docker-compose up"]
+watch = ["docker-compose.yml"]
+
+[tasks.dev-detached]
+desc = "Start the stack in detached mode (background)"
+run = ["docker-compose up -d"]
+
+[tasks.down]
+desc = "Stop the entire development stack"
+run = ["docker-compose down"]
+
+[tasks.down-clean]
+desc = "Stop the stack and remove volumes (fresh start)"
+run = ["docker-compose down -v"]
+
+[tasks.logs]
+desc = "Follow logs from all services"
+run = ["docker-compose logs -f"]
+
+[tasks.logs-backend]
+desc = "Follow backend logs only"
+run = ["docker-compose logs -f backend"]
+
+[tasks.logs-frontend]
+desc = "Follow frontend logs only"
+run = ["docker-compose logs -f frontend"]
+
+# ============================================================================
+# BACKEND TASKS (Rust/Axum)
+# ============================================================================
+
+[tasks.backend-test]
+desc = "Run backend tests (in Docker)"
+run = ["docker-compose exec -T backend cargo test"]
+
+[tasks.backend-test-local]
+desc = "Run backend tests (local Rust installation)"
+run = ["cargo test"]
+cwd = "backend"
+
+[tasks.backend-check]
+desc = "Run cargo check on backend"
+run = ["docker-compose exec -T backend cargo check"]
+
+[tasks.backend-check-local]
+desc = "Run cargo check locally"
+run = ["cargo check"]
+cwd = "backend"
+
+[tasks.backend-fmt]
+desc = "Format backend code"
+run = ["docker-compose exec -T backend cargo fmt"]
+
+[tasks.backend-fmt-local]
+desc = "Format backend code locally"
+run = ["cargo fmt"]
+cwd = "backend"
+
+[tasks.backend-fmt-check]
+desc = "Check backend formatting (CI-friendly)"
+run = ["cargo fmt -- --check"]
+cwd = "backend"
+
+[tasks.backend-clippy]
+desc = "Run clippy lints on backend"
+run = ["docker-compose exec -T backend cargo clippy -- -D warnings"]
+
+[tasks.backend-clippy-local]
+desc = "Run clippy lints locally"
+run = ["cargo clippy -- -D warnings"]
+cwd = "backend"
+
+[tasks.backend-build]
+desc = "Build backend in release mode"
+run = ["cargo build --release"]
+cwd = "backend"
+sources = ["backend/src/**/*.rs", "backend/Cargo.toml"]
+outputs = ["backend/target/release/boutique-bouquet-api"]
+
+[tasks.backend-docker-build]
+desc = "Build backend Docker image for production"
+run = ["docker build -f backend/Dockerfile -t boutique-bouquet-backend:latest ./backend"]
+
+[tasks.backend-dev-local]
+desc = "Start database in Docker and run backend locally"
+depends = ["db-start"]
+run = ["cargo run"]
+cwd = "backend"
+foreground = true
+
+[tasks.dev-local]
+desc = "Start DB in Docker, backend and frontend locally (parallel)"
+run = ["sh", "-c", "docker-compose up -d postgres && (cd backend && cargo run) & (cd frontend && npm run dev) & wait"]
+
+[tasks.frontend-dev-local]
+desc = "Run frontend locally"
+run = ["npm run dev"]
+cwd = "frontend"
+
+# ============================================================================
+# FRONTEND TASKS (Next.js/TypeScript)
+# ============================================================================
+
+[tasks.frontend-test]
+desc = "Run frontend tests (in Docker)"
+run = ["docker-compose exec -T frontend npm test"]
+
+[tasks.frontend-lint]
+desc = "Lint frontend code"
+run = ["docker-compose exec -T frontend npm run lint"]
+
+[tasks.frontend-lint-local]
+desc = "Lint frontend code locally"
+run = ["npm run lint"]
+cwd = "frontend"
+
+[tasks.frontend-type-check]
+desc = "Type-check frontend code"
+run = ["docker-compose exec -T frontend npm run type-check"]
+
+[tasks.frontend-type-check-local]
+desc = "Type-check frontend locally"
+run = ["npm run type-check"]
+cwd = "frontend"
+
+[tasks.frontend-build]
+desc = "Build frontend for production"
+run = ["npm run build"]
+cwd = "frontend"
+sources = ["frontend/src/**/*", "frontend/app/**/*", "frontend/package.json"]
+outputs = ["frontend/.next/**/*"]
+
+[tasks.frontend-install]
+desc = "Install frontend dependencies"
+run = ["npm install"]
+cwd = "frontend"
+
+# ============================================================================
+# DATABASE TASKS
+# ============================================================================
+
+[tasks.db-start]
+desc = "Start just the database"
+run = ["docker-compose up -d postgres"]
+no_cache = true
+
+[tasks.db-stop]
+desc = "Stop the database"
+run = ["docker-compose stop postgres"]
+
+[tasks.db-reset]
+desc = "Reset the database (WARNING: destroys data)"
+run = ["docker-compose down -v postgres", "docker-compose up -d postgres"]
+
+[tasks.db-shell]
+desc = "Open psql shell to the database"
+run = ["docker-compose exec postgres psql -U postgres -d boutique_bouquet"]
+
+[tasks.create-admin]
+desc = "Create admin user (usage: yatr create-admin -- email password)"
+run = ["docker-compose exec backend cargo run -- create-admin $@"]
+
+# ============================================================================
+# FULL STACK TASKS (Orchestration)
+# ============================================================================
+
+[tasks.test]
+desc = "Run all tests (backend + frontend)"
+depends = ["backend-test", "frontend-test"]
+
+[tasks.lint]
+desc = "Lint all code (backend + frontend)"
+depends = ["backend-clippy", "frontend-lint", "frontend-type-check"]
+
+[tasks.format]
+desc = "Format all code"
+depends = ["backend-fmt"]
+
+[tasks.format-check]
+desc = "Check formatting (CI-friendly)"
+depends = ["backend-fmt-check"]
+
+[tasks.check]
+desc = "Run all checks (linting, type-checking, formatting)"
+depends = ["backend-clippy", "backend-fmt-check", "frontend-lint", "frontend-type-check"]
+
+[tasks.build]
+desc = "Build both frontend and backend for production"
+depends = ["backend-build", "frontend-build"]
+
+# ============================================================================
+# CI/CD TASKS
+# ============================================================================
+
+[tasks.ci]
+desc = "Run full CI pipeline (checks + tests + build)"
+depends = ["check", "test", "build"]
+
+[tasks.pre-commit]
+desc = "Run before committing (format + check + test)"
+depends = ["format", "check", "test"]
+
+# ============================================================================
+# UTILITIES
+# ============================================================================
+
+[tasks.clean]
+desc = "Clean build artifacts"
+run = [
+  "rm -rf backend/target",
+  "rm -rf frontend/.next",
+  "rm -rf frontend/node_modules"
+]
+
+[tasks.health-check]
+desc = "Check if all services are healthy"
+run = [
+  "curl -f http://localhost:8000/api/health || echo 'Backend unhealthy'",
+  "curl -f http://localhost:3000 || echo 'Frontend unhealthy'"
+]
+
+[tasks.restart]
+desc = "Restart the entire stack (quick)"
+run = ["docker-compose restart"]
+
+[tasks.rebuild]
+desc = "Rebuild and restart the stack (includes Docker build)"
+run = ["docker-compose up -d --build"]

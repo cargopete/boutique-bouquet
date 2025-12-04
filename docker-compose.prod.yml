@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: boutique-postgres-prod
+    environment:
+      POSTGRES_DB: ${DB_NAME:-boutique_bouquet}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+  # Rust Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: boutique-backend-prod
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRY_HOURS: ${JWT_EXPIRY_HOURS:-24}
+      RUST_LOG: info
+      HOST: 0.0.0.0
+      PORT: 8000
+      UPLOAD_DIR: ./uploads
+      MAX_UPLOAD_SIZE: 5242880
+      CORS_ORIGINS: ${CORS_ORIGINS}
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: boutique-frontend-prod
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_SITE_NAME: ${NEXT_PUBLIC_SITE_NAME:-Boutique Bouquet}
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: boutique-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./uploads:/var/www/uploads:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    networks:
+      - boutique-network
+
+volumes:
+  postgres_data:
+
+networks:
+  boutique-network:
+    driver: bridge
