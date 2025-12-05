@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
+import { CookieConsent } from "@/components/CookieConsent";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
@@ -82,6 +83,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Toaster position="top-right" />
+        <CookieConsent />
       </body>
     </html>
   );

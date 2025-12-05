@@ -31,6 +31,9 @@ dotenv = "0.15"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
+# Metrics
+axum-prometheus = "0.7"
+
 # Error handling
 anyhow = "1.0"
 thiserror = "1.0"

@@ -3,6 +3,7 @@ use axum::{
     routing::{delete, get, post, put},
     Router,
 };
+use axum_prometheus::PrometheusMetricLayer;
 use sqlx::postgres::PgPoolOptions;
 use std::net::SocketAddr;
 use tower_http::{
@@ -66,6 +67,14 @@ async fn main() {
         .await
         .expect("Failed to create upload directory");
 
+    // Set up Prometheus metrics
+    let (prometheus_layer, metric_handle) = PrometheusMetricLayer::pair();
+    tracing::info!("Prometheus metrics enabled at /metrics");
+
+    // Metrics route (separate from main app to avoid auth/CORS issues)
+    let metrics_app = Router::new()
+        .route("/metrics", get(|| async move { metric_handle.render() }));
+
     // Public routes
     let public_routes = Router::new()
         .route("/api/health", get(handlers::health::health_check))
@@ -100,9 +109,11 @@ async fn main() {
         .merge(public_routes)
         .merge(admin_routes)
         .nest_service("/uploads", ServeDir::new(upload_dir))
+        .layer(prometheus_layer)
         .layer(TraceLayer::new_for_http())
         .layer(cors)
-        .with_state(db_pool);
+        .with_state(db_pool)
+        .merge(metrics_app);
 
     // Get host and port from environment
     let host = std::env::var("HOST").unwrap_or_else(|_| "0.0.0.0".to_string());
