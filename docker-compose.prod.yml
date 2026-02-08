@@ -4,9 +4,9 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
-    container_name: boutique-postgres-prod
+    container_name: zemya-postgres-prod
     environment:
-      POSTGRES_DB: ${DB_NAME:-boutique_bouquet}
+      POSTGRES_DB: ${DB_NAME:-studio_zemya}
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
@@ -18,14 +18,14 @@ services:
       retries: 5
     restart: unless-stopped
     networks:
-      - boutique-network
+      - zemya-network
 
   # Rust Backend API
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: boutique-backend-prod
+    container_name: zemya-backend-prod
     environment:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
@@ -43,29 +43,29 @@ services:
         condition: service_healthy
     restart: unless-stopped
     networks:
-      - boutique-network
+      - zemya-network
 
   # Next.js Frontend
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: boutique-frontend-prod
+    container_name: zemya-frontend-prod
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-      NEXT_PUBLIC_SITE_NAME: ${NEXT_PUBLIC_SITE_NAME:-Boutique Bouquet}
+      NEXT_PUBLIC_SITE_NAME: ${NEXT_PUBLIC_SITE_NAME:-Studio Zemya}
     depends_on:
       - backend
     restart: unless-stopped
     networks:
-      - boutique-network
+      - zemya-network
 
   # Nginx Reverse Proxy
   nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    container_name: boutique-nginx
+    container_name: zemya-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -78,11 +78,11 @@ services:
       - backend
     restart: unless-stopped
     networks:
-      - boutique-network
+      - zemya-network
 
 volumes:
   postgres_data:
 
 networks:
-  boutique-network:
+  zemya-network:
     driver: bridge

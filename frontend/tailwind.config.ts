@@ -42,11 +42,37 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Studio Zemya custom colours
+        terracotta: {
+          DEFAULT: "hsl(var(--terracotta))",
+          dark: "hsl(var(--terracotta-dark))",
+          light: "hsl(var(--terracotta-light))",
+        },
+        ochre: {
+          DEFAULT: "hsl(var(--ochre))",
+          dark: "hsl(var(--ochre-dark))",
+        },
+        sage: {
+          DEFAULT: "hsl(var(--sage))",
+          light: "hsl(var(--sage-light))",
+        },
+        cream: "hsl(var(--cream))",
+        "warm-gray": "hsl(var(--warm-gray))",
+        "clay-brown": "hsl(var(--clay-brown))",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        sans: ["Inter", "system-ui", "sans-serif"],
+      },
+      boxShadow: {
+        "warm-sm": "0 1px 2px 0 rgba(139, 90, 43, 0.05)",
+        warm: "0 1px 3px 0 rgba(139, 90, 43, 0.1), 0 1px 2px -1px rgba(139, 90, 43, 0.1)",
+        "warm-md": "0 4px 6px -1px rgba(139, 90, 43, 0.1), 0 2px 4px -2px rgba(139, 90, 43, 0.1)",
+        "warm-lg": "0 10px 15px -3px rgba(139, 90, 43, 0.1), 0 4px 6px -4px rgba(139, 90, 43, 0.1)",
       },
     },
   },

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f0eb"/>
+      <stop offset="100%" style="stop-color:#e8ddd4"/>
+    </linearGradient>
+    <linearGradient id="clay" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a574"/>
+      <stop offset="50%" style="stop-color:#c67b5c"/>
+      <stop offset="100%" style="stop-color:#a55d45"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg)"/>
+
+  <!-- Clay pot/vase shape -->
+  <ellipse cx="400" cy="480" rx="120" ry="20" fill="#a55d45" opacity="0.3"/>
+  <path d="M280 450 Q280 350 320 280 Q340 240 400 240 Q460 240 480 280 Q520 350 520 450 Q520 480 400 480 Q280 480 280 450Z" fill="url(#clay)"/>
+  <ellipse cx="400" cy="240" rx="80" ry="15" fill="#d4a574"/>
+  <ellipse cx="400" cy="245" rx="70" ry="10" fill="#c67b5c"/>
+
+  <!-- Decorative swirl on pot -->
+  <path d="M340 340 Q360 320 380 340 Q400 360 420 340 Q440 320 460 340" stroke="#e8c4a8" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M350 380 Q370 360 390 380 Q410 400 430 380 Q450 360 470 380" stroke="#e8c4a8" stroke-width="2" fill="none" opacity="0.4"/>
+
+  <!-- Small decorative elements suggesting craft -->
+  <circle cx="200" cy="200" r="8" fill="#c67b5c" opacity="0.4"/>
+  <circle cx="220" cy="180" r="5" fill="#d4a574" opacity="0.3"/>
+  <circle cx="600" cy="220" r="10" fill="#c67b5c" opacity="0.3"/>
+  <circle cx="580" cy="190" r="6" fill="#d4a574" opacity="0.4"/>
+
+  <!-- Text -->
+  <text x="400" y="550" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="#8b6b4f">Studio Zemya</text>
+</svg>

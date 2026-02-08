@@ -15,13 +15,17 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+    "font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2";
 
   const variants = {
-    primary: "bg-rose-600 text-white hover:bg-rose-700",
-    secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300",
-    outline: "border-2 border-rose-600 text-rose-600 hover:bg-rose-50",
-    danger: "bg-red-600 text-white hover:bg-red-700",
+    primary:
+      "bg-terracotta text-white hover:bg-terracotta-dark focus:ring-terracotta shadow-warm hover:shadow-warm-md",
+    secondary:
+      "bg-secondary text-secondary-foreground hover:bg-cream focus:ring-ochre",
+    outline:
+      "border-2 border-terracotta text-terracotta hover:bg-terracotta hover:text-white focus:ring-terracotta",
+    danger:
+      "bg-destructive text-destructive-foreground hover:opacity-90 focus:ring-destructive",
   };
 
   const sizes = {

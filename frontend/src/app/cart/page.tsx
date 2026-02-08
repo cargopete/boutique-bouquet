@@ -12,7 +12,11 @@ export default function CartPage() {
 
   const total = getTotalPrice();
 
-  function handleUpdateQuantity(productId: number, productName: string, newQuantity: number) {
+  function handleUpdateQuantity(
+    productId: number,
+    productName: string,
+    newQuantity: number
+  ) {
     updateQuantity(productId, newQuantity);
     toast.success("Количеството е актуализирано");
   }
@@ -24,13 +28,13 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <main className="min-h-screen bg-gray-50 py-12">
+      <main className="min-h-screen bg-background py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          <h1 className="text-3xl font-bold text-clay-brown mb-8">
             Количка за пазаруване
           </h1>
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <p className="text-xl text-gray-600 mb-6">
+          <div className="bg-card rounded-lg shadow-warm-md p-12 text-center border border-border/50">
+            <p className="text-xl text-warm-gray mb-6">
               Вашата количка е празна
             </p>
             <Button onClick={() => router.push("/")}>
@@ -43,9 +47,9 @@ export default function CartPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12">
+    <main className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
+        <h1 className="text-3xl font-bold text-clay-brown mb-8">
           Количка за пазаруване
         </h1>
 
@@ -55,7 +59,7 @@ export default function CartPage() {
             {items.map((item) => {
               const imageUrl = item.product.image_url
                 ? `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${item.product.image_url}`
-                : "/placeholder-flower.jpg";
+                : "/placeholder-clay.svg";
 
               const price = parseFloat(item.product.price);
               const subtotal = price * item.quantity;
@@ -63,9 +67,9 @@ export default function CartPage() {
               return (
                 <div
                   key={item.product.id}
-                  className="bg-white rounded-lg shadow-md p-6 flex gap-4"
+                  className="bg-card rounded-lg shadow-warm p-6 flex gap-4 border border-border/50"
                 >
-                  <div className="relative w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                  <div className="relative w-24 h-24 flex-shrink-0 bg-cream rounded-lg overflow-hidden">
                     <Image
                       src={imageUrl}
                       alt={item.product.name}
@@ -75,10 +79,10 @@ export default function CartPage() {
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <h3 className="text-lg font-semibold text-clay-brown mb-2">
                       {item.product.name}
                     </h3>
-                    <p className="text-rose-600 font-medium mb-2">
+                    <p className="text-terracotta font-medium mb-2">
                       {price.toFixed(2)} лв
                     </p>
 
@@ -87,23 +91,29 @@ export default function CartPage() {
                         size="sm"
                         variant="outline"
                         onClick={() =>
-                          handleUpdateQuantity(item.product.id, item.product.name, item.quantity - 1)
+                          handleUpdateQuantity(
+                            item.product.id,
+                            item.product.name,
+                            item.quantity - 1
+                          )
                         }
                       >
                         -
                       </Button>
-                      <span className="font-medium w-8 text-center">
+                      <span className="font-medium w-8 text-center text-clay-brown">
                         {item.quantity}
                       </span>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() =>
-                          handleUpdateQuantity(item.product.id, item.product.name, item.quantity + 1)
+                          handleUpdateQuantity(
+                            item.product.id,
+                            item.product.name,
+                            item.quantity + 1
+                          )
                         }
-                        disabled={
-                          item.quantity >= item.product.stock_quantity
-                        }
+                        disabled={item.quantity >= item.product.stock_quantity}
                       >
                         +
                       </Button>
@@ -111,13 +121,15 @@ export default function CartPage() {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-lg font-bold text-gray-900 mb-2">
+                    <p className="text-lg font-bold text-clay-brown mb-2">
                       {subtotal.toFixed(2)} лв
                     </p>
                     <Button
                       size="sm"
                       variant="danger"
-                      onClick={() => handleRemoveItem(item.product.id, item.product.name)}
+                      onClick={() =>
+                        handleRemoveItem(item.product.id, item.product.name)
+                      }
                     >
                       Премахни
                     </Button>
@@ -129,23 +141,23 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+            <div className="bg-card rounded-lg shadow-warm-md p-6 sticky top-24 border border-border/50">
+              <h2 className="text-xl font-bold text-clay-brown mb-4">
                 Обобщение
               </h2>
 
               <div className="space-y-2 mb-6">
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-warm-gray">
                   <span>Продукти ({items.length}):</span>
                   <span>{total.toFixed(2)} лв</span>
                 </div>
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-warm-gray">
                   <span>Доставка:</span>
                   <span>Безплатна</span>
                 </div>
-                <div className="border-t pt-2 flex justify-between text-xl font-bold text-gray-900">
+                <div className="border-t border-border pt-2 flex justify-between text-xl font-bold text-clay-brown">
                   <span>Общо:</span>
-                  <span>{total.toFixed(2)} лв</span>
+                  <span className="text-terracotta">{total.toFixed(2)} лв</span>
                 </div>
               </div>
 

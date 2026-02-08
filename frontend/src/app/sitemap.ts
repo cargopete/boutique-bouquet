@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://boutiquet-bouquet.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://studiozemya.com";
 
 interface Product {
   id: number;

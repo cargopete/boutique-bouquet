@@ -1,6 +1,6 @@
-# Boutique Bouquet 💐
+# Studio Zemya
 
-E-commerce platform for artificial flower bouquets targeting the Bulgarian market.
+E-commerce platform for handmade polymer clay sculptures, figurines, and jewelry targeting the Bulgarian market.
 
 ## Tech Stack
 
@@ -64,7 +64,7 @@ docker-compose exec backend cargo run -- create-admin admin@example.com yourpass
 ## Project Structure
 
 ```
-boutique-bouquet/
+studio-zemya/
 ├── frontend/          # Next.js application
 ├── backend/           # Rust/Axum API
 ├── nginx/             # Production reverse proxy

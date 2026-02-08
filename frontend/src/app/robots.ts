@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://boutiquet-bouquet.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://studiozemya.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -4,9 +4,9 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
-    container_name: boutique-postgres
+    container_name: zemya-postgres
     environment:
-      POSTGRES_DB: boutique_bouquet
+      POSTGRES_DB: studio_zemya
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: devpassword
     ports:
@@ -19,18 +19,18 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - boutique-network
+      - zemya-network
 
   # Rust Backend API
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
-    container_name: boutique-backend
+    container_name: zemya-backend
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgres://postgres:devpassword@postgres:5432/boutique_bouquet
+      DATABASE_URL: postgres://postgres:devpassword@postgres:5432/studio_zemya
       JWT_SECRET: dev-secret-change-in-production-minimum-32-characters
       JWT_EXPIRY_HOURS: 24
       RUST_LOG: debug
@@ -47,19 +47,19 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - boutique-network
+      - zemya-network
 
   # Next.js Frontend
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
-    container_name: boutique-frontend
+    container_name: zemya-frontend
     ports:
       - "3000:3000"
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8000
-      NEXT_PUBLIC_SITE_NAME: Boutique Bouquet
+      NEXT_PUBLIC_SITE_NAME: Studio Zemya
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -67,12 +67,12 @@ services:
     depends_on:
       - backend
     networks:
-      - boutique-network
+      - zemya-network
 
 volumes:
   postgres_data:
   backend_target:
 
 networks:
-  boutique-network:
+  zemya-network:
     driver: bridge

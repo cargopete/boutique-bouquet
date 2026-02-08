@@ -1,5 +1,5 @@
 [package]
-name = "boutique-bouquet-api"
+name = "studio-zemya-api"
 version = "0.1.0"
 edition = "2021"
 
@@ -43,5 +43,5 @@ bytes = "1.5"
 mime_guess = "2.0"
 
 [[bin]]
-name = "boutique-bouquet-api"
+name = "studio-zemya-api"
 path = "src/main.rs"

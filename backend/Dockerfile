@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy the binary from builder
-COPY --from=builder /app/target/release/boutique-bouquet-api /app/boutique-bouquet-api
+COPY --from=builder /app/target/release/studio-zemya-api /app/studio-zemya-api
 
 # Copy migrations
 COPY --from=builder /app/migrations /app/migrations
@@ -56,4 +56,4 @@ RUN mkdir -p /app/uploads
 
 EXPOSE 8000
 
-CMD ["/app/boutique-bouquet-api"]
+CMD ["/app/studio-zemya-api"]

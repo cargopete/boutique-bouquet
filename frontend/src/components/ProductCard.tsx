@@ -13,29 +13,29 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
     ? product.image_url.startsWith("http")
       ? product.image_url
       : `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${product.image_url}`
-    : "/placeholder-flower.jpg";
+    : "/placeholder-clay.svg";
 
   const isExternalImage = imageUrl.startsWith("http");
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-card rounded-lg shadow-warm overflow-hidden hover:shadow-warm-lg transition-all duration-300 border border-border/50 group">
       <Link href={`/products/${product.id}`}>
-        <div className="relative h-64 bg-gray-100">
+        <div className="relative h-64 bg-cream">
           {isExternalImage ? (
             <img
               src={imageUrl}
               alt={product.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
             <Image
               src={imageUrl}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.src = "/placeholder-flower.jpg";
+                target.src = "/placeholder-clay.svg";
               }}
             />
           )}
@@ -44,36 +44,33 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
       <div className="p-4">
         <Link href={`/products/${product.id}`}>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-rose-600 transition-colors">
+          <h3 className="text-lg font-semibold text-clay-brown mb-2 hover:text-terracotta transition-colors">
             {product.name}
           </h3>
         </Link>
 
         {product.description && (
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+          <p className="text-sm text-warm-gray mb-3 line-clamp-2">
             {product.description}
           </p>
         )}
 
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-rose-600">
+          <span className="text-2xl font-bold text-terracotta">
             {parseFloat(product.price).toFixed(2)} лв
           </span>
 
           {product.stock_quantity > 0 ? (
-            <Button
-              size="sm"
-              onClick={() => onAddToCart?.(product)}
-            >
+            <Button size="sm" onClick={() => onAddToCart?.(product)}>
               Добави
             </Button>
           ) : (
-            <span className="text-sm text-gray-500">Изчерпан</span>
+            <span className="text-sm text-warm-gray">Изчерпан</span>
           )}
         </div>
 
         {product.stock_quantity > 0 && product.stock_quantity < 5 && (
-          <p className="text-xs text-orange-600 mt-2">
+          <p className="text-xs text-ochre-dark mt-2 font-medium">
             Остават само {product.stock_quantity} бр.
           </p>
         )}

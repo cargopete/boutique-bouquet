@@ -2,7 +2,7 @@ import { getProducts } from "@/lib/api";
 import { ProductGrid } from "@/components/ProductGrid";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://boutiquet-bouquet.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://studiozemya.com";
 
 async function fetchProducts() {
   try {
@@ -18,24 +18,30 @@ export default async function Home() {
 
   return (
     <>
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-rose-100 to-pink-100 py-16">
+        <section className="bg-gradient-to-br from-secondary via-cream to-terracotta-light/20 py-20">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Добре дошли в Boutique Bouquet 💐
+            <h1 className="text-5xl md:text-6xl font-bold text-clay-brown mb-6 tracking-tight">
+              Добре дошли в Studio Zemya
             </h1>
-            <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-              Висококачествени изкуствени цветя и букети за всеки повод.
-              Красота, която трае завинаги.
+            <p className="text-xl text-warm-gray max-w-2xl mx-auto leading-relaxed">
+              Ръчно изработени скулптури, фигурки и бижута от полимерна глина.
+              Всяко изделие е уникално — създадено с любов и внимание към
+              детайла.
             </p>
+            <div className="mt-8 flex justify-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-terracotta"></span>
+              <span className="inline-block w-2 h-2 rounded-full bg-ochre"></span>
+              <span className="inline-block w-2 h-2 rounded-full bg-sage"></span>
+            </div>
           </div>
         </section>
 
         {/* Products Section */}
-        <section className="container mx-auto px-4 py-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            Нашите Продукти
+        <section className="container mx-auto px-4 py-16">
+          <h2 className="text-3xl font-bold text-clay-brown mb-8">
+            Нашите Творби
           </h2>
           <ProductGrid products={products} />
         </section>
@@ -48,9 +54,9 @@ export default async function Home() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "Boutique Bouquet",
+            name: "Studio Zemya",
             description:
-              "Магазин за изкуствени цветя и букети в България. Висококачествени изкуствени рози, лилии, орхидеи и други цветя за всеки повод.",
+              "Ръчно изработени скулптури, фигурки и бижута от полимерна глина. Уникално изкуство за вашия дом и подаръци с душа.",
             url: SITE_URL,
             logo: `${SITE_URL}/logo.png`,
             contactPoint: {
@@ -60,8 +66,8 @@ export default async function Home() {
             },
             sameAs: [
               // Add social media URLs here when available
-              // "https://facebook.com/boutiquebouquet",
-              // "https://instagram.com/boutiquebouquet",
+              // "https://facebook.com/studiozemya",
+              // "https://instagram.com/studiozemya",
             ],
           }),
         }}
@@ -74,9 +80,9 @@ export default async function Home() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            name: "Boutique Bouquet",
+            name: "Studio Zemya",
             description:
-              "Магазин за изкуствени цветя и букети в България",
+              "Ръчно изработени скулптури, фигурки и бижута от полимерна глина",
             url: SITE_URL,
             potentialAction: {
               "@type": "SearchAction",
@@ -110,7 +116,7 @@ export default async function Home() {
                     ? product.image_url.startsWith("http")
                       ? product.image_url
                       : `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${product.image_url}`
-                    : `${SITE_URL}/placeholder-flower.jpg`,
+                    : `${SITE_URL}/placeholder-clay.svg`,
                   offers: {
                     "@type": "Offer",
                     price: parseFloat(product.price),

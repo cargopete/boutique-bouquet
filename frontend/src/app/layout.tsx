@@ -9,51 +9,51 @@ const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Boutique Bouquet - Изкуствени Цветя и Букети България",
-    template: "%s | Boutique Bouquet",
+    default: "Studio Zemya — Полимерна Глина | Скулптури и Бижута",
+    template: "%s | Studio Zemya",
   },
   description:
-    "Магазин за изкуствени цветя и букети в България. Висококачествени изкуствени рози, лилии, орхидеи и други цветя за всеки повод. Декорация за сватби, събития и дома.",
+    "Ръчно изработени скулптури, фигурки и бижута от полимерна глина. Уникално изкуство за вашия дом и подаръци с душа. Авторски творби от България.",
   keywords: [
-    "изкуствени цветя",
-    "изкуствени букети",
-    "изкуствени рози",
-    "букети България",
-    "сватбена декорация",
-    "декорация за събития",
-    "изкуствени божури",
-    "декорация за дома",
-    "изкуствени орхидеи",
-    "изкуствени лилии",
+    "полимерна глина",
+    "ръчна изработка",
+    "скулптури",
+    "фигурки",
+    "бижута",
+    "арт",
+    "авторски бижута",
+    "миниатюри",
+    "handmade България",
+    "уникални подаръци",
   ],
-  authors: [{ name: "Boutique Bouquet" }],
-  creator: "Boutique Bouquet",
-  publisher: "Boutique Bouquet",
+  authors: [{ name: "Studio Zemya" }],
+  creator: "Studio Zemya",
+  publisher: "Studio Zemya",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://boutiquet-bouquet.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://studiozemya.com"
   ),
   openGraph: {
     type: "website",
     locale: "bg_BG",
     url: "/",
-    title: "Boutique Bouquet - Изкуствени Цветя и Букети България",
+    title: "Studio Zemya — Полимерна Глина | Скулптури и Бижута",
     description:
-      "Магазин за изкуствени цветя и букети в България. Висококачествени изкуствени рози, лилии, орхидеи и други цветя за всеки повод.",
-    siteName: "Boutique Bouquet",
+      "Ръчно изработени скулптури, фигурки и бижута от полимерна глина. Уникално изкуство за вашия дом и подаръци с душа.",
+    siteName: "Studio Zemya",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Boutique Bouquet - Изкуствени Цветя България",
+        alt: "Studio Zemya — Ръчна Изработка от Полимерна Глина",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Boutique Bouquet - Изкуствени Цветя и Букети България",
+    title: "Studio Zemya — Полимерна Глина | Скулптури и Бижута",
     description:
-      "Висококачествени изкуствени цветя и букети за всеки повод в България.",
+      "Ръчно изработени скулптури, фигурки и бижута от полимерна глина. Уникално изкуство за вашия дом.",
     images: ["/og-image.jpg"],
   },
   robots: {

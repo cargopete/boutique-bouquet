@@ -1,4 +1,4 @@
-# Boutique Bouquet Task Runner Configuration
+# Studio Zemya Task Runner Configuration
 # Run `yatr list` to see all available tasks
 
 [settings]
@@ -90,11 +90,11 @@ desc = "Build backend in release mode"
 run = ["cargo build --release"]
 cwd = "backend"
 sources = ["backend/src/**/*.rs", "backend/Cargo.toml"]
-outputs = ["backend/target/release/boutique-bouquet-api"]
+outputs = ["backend/target/release/studio-zemya-api"]
 
 [tasks.backend-docker-build]
 desc = "Build backend Docker image for production"
-run = ["docker build -f backend/Dockerfile -t boutique-bouquet-backend:latest ./backend"]
+run = ["docker build -f backend/Dockerfile -t studio-zemya-backend:latest ./backend"]
 
 [tasks.backend-dev-local]
 desc = "Start database in Docker and run backend locally"
@@ -169,7 +169,7 @@ run = ["docker-compose down -v postgres", "docker-compose up -d postgres"]
 
 [tasks.db-shell]
 desc = "Open psql shell to the database"
-run = ["docker-compose exec postgres psql -U postgres -d boutique_bouquet"]
+run = ["docker-compose exec postgres psql -U postgres -d studio_zemya"]
 
 [tasks.create-admin]
 desc = "Create admin user (usage: yatr create-admin -- email password)"

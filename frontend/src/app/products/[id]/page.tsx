@@ -4,7 +4,7 @@ import { getProduct } from "@/lib/api";
 import { ProductDetail } from "@/components/ProductDetail";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://boutiquet-bouquet.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://studiozemya.com";
 
 interface PageProps {
   params: {
@@ -37,13 +37,13 @@ export async function generateMetadata({
     ? product.image_url.startsWith("http")
       ? product.image_url
       : `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${product.image_url}`
-    : `${SITE_URL}/placeholder-flower.jpg`;
+    : `${SITE_URL}/placeholder-clay.svg`;
 
   return {
     title: product.name,
     description:
       product.description ||
-      `Купете ${product.name} - висококачествени изкуствени цветя от Boutique Bouquet. Цена: ${price.toFixed(2)} лв. ${product.stock_quantity > 0 ? "В наличност." : ""}`,
+      `Купете ${product.name} — ръчно изработено от полимерна глина в Studio Zemya. Цена: ${price.toFixed(2)} лв. ${product.stock_quantity > 0 ? "В наличност." : ""}`,
     openGraph: {
       title: product.name,
       description:
@@ -95,7 +95,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
               ? product.image_url.startsWith("http")
                 ? product.image_url
                 : `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${product.image_url}`
-              : `${SITE_URL}/placeholder-flower.jpg`,
+              : `${SITE_URL}/placeholder-clay.svg`,
             offers: {
               "@type": "Offer",
               price: parseFloat(product.price),

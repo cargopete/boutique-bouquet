@@ -1,5 +1,5 @@
--- Boutique Bouquet Initial Database Schema
--- MVP Schema for artificial flower e-commerce
+-- Studio Zemya Initial Database Schema
+-- MVP Schema for polymer clay art e-commerce
 
 -- Admin users table
 CREATE TABLE IF NOT EXISTS admins (
