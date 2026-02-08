@@ -1,0 +1,25 @@
+[Unit]
+Description=Studio Zemya API
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/studio-zemya/backend
+ExecStart=/var/www/studio-zemya/backend/target/release/studio-zemya-api
+Restart=always
+RestartSec=5
+Environment=RUST_LOG=info
+
+# Load environment variables from file
+EnvironmentFile=/var/www/studio-zemya/backend/.env
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/studio-zemya/backend/uploads
+
+[Install]
+WantedBy=multi-user.target
